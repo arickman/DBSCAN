@@ -4,7 +4,7 @@
 
 using namespace boost::numeric;
 
-namespace clustering;
+namespace clustering
 {
 	class DBSCAN
 	{
