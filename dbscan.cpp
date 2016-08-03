@@ -6,7 +6,7 @@
 #include <vector>
 #include "stdint.h"
 #include <omp.h>
-
+//
 #include "dbscan.h"
 
 namespace clustering
