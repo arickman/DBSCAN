@@ -1,9 +1,10 @@
 #include <vector>
+#include "stdint.h"
 #include <boost/numeric/ublas/matrix.hpp>
 
 using namespace boost::numeric;
 
-namespace clustering
+namespace clustering;
 {
 	class DBSCAN
 	{

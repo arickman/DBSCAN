@@ -4,6 +4,7 @@
 #include <boost/numeric/ublas/io.hpp>
 #include <boost/algorithm/minmax.hpp>
 #include <vector>
+#include "stdint.h"
 #include <omp.h>
 
 #include "dbscan.h"
@@ -16,7 +17,7 @@ namespace clustering
 
 		for (size_t i = 0; i < elements_num; ++i)
 		{
-			for (size_t j = 0; j < features_num; ++j)	
+			for (size_t j = 0; j < features_num; ++j)
 			{
 				cl_d(i, j) = (-1.0 + rand() * (2.0) / RAND_MAX);
 			}
@@ -74,7 +75,7 @@ namespace clustering
 	{
 		m_labels.resize(s);
 
-		for( auto & l : m_labels)
+		for( auto &l : m_labels)
 		{
 			l = -1;
 		}
@@ -84,7 +85,7 @@ namespace clustering
 	{
 		DBSCAN::ClusterData cl_d = C;
 
-		omp_set_dynamic(0);     
+		omp_set_dynamic(0);
 		omp_set_num_threads( m_num_threads );
 		#pragma omp parallel for
 		for (size_t i = 0; i < cl_d.size2(); ++i)
@@ -110,12 +111,12 @@ namespace clustering
 		ublas::vector<double> d_max( cl_d.size1() );
 		ublas::vector<double> d_min( cl_d.size1() );
 
-		omp_set_dynamic(0);     
+		omp_set_dynamic(0);
 		omp_set_num_threads( m_num_threads );
 		#pragma omp parallel for
 		for (size_t i = 0; i < cl_d.size1(); ++i)
 		{
-			for (size_t j = i; j < cl_d.size1(); ++j)	
+			for (size_t j = i; j < cl_d.size1(); ++j)
 			{
 				d_m(i, j) = 0.0;
 
@@ -172,7 +173,7 @@ namespace clustering
 		for (uint32_t pid = 0; pid < dm.size1(); ++pid)
 		{
 			if ( !visited[pid] )
-			{  
+			{
 				visited[pid] = 1;
 
 				Neighbors ne = find_neighbors(dm, pid );
@@ -212,12 +213,12 @@ namespace clustering
 		}
 	}
 
-	void DBSCAN::fit( const DBSCAN::ClusterData & C ) 
+	void DBSCAN::fit( const DBSCAN::ClusterData & C )
 	{
 		const DBSCAN::FeaturesWeights W = DBSCAN::std_weights( C.size2() );
 		wfit( C, W );
 	}
-	void DBSCAN::fit_precomputed( const DBSCAN::DistanceMatrix & D ) 
+	void DBSCAN::fit_precomputed( const DBSCAN::DistanceMatrix & D )
 	{
 		prepare_labels( D.size1() );
 		dbscan( D );
